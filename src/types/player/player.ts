@@ -4,3 +4,10 @@ export interface Player {
   password: string;
   wins: number;
 }
+
+export type PlayerDataResponse = {
+  name: string;
+  index: string | number;
+  error: boolean;
+  errorText: string;
+};

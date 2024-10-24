@@ -1,18 +1,20 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { Message, MessageType } from '../../types';
+import { MessageRequest, MessageType } from '../../types';
+import { handlePlayerRegistration } from '../../controllers';
 
 export const websocketService = (port: number) => {
   const wss = new WebSocketServer({ port });
 
   wss.on('connection', (ws: WebSocket) => {
-    console.log('New connection established');
+    console.log('New connection');
 
     ws.on('message', (message: string) => {
-      const parsedMessage: Message = JSON.parse(message);
-      console.log(`Command received: ${parsedMessage}`);
+      const parsedMessage: MessageRequest = JSON.parse(message);
+      console.log(`Command received: ${parsedMessage.type}`);
 
       switch (parsedMessage.type) {
         case MessageType.REG:
+          handlePlayerRegistration(ws, parsedMessage.data);
           break;
 
         default:

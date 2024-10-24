@@ -1,7 +1,13 @@
-import { MessageData } from './messageData';
+import { MessageDataRequest } from './messageDataRequest';
 
-export interface Message {
+export interface MessageResponse {
   type: string;
-  data: MessageData;
+  data: string;
+  id: number;
+}
+
+export interface MessageRequest {
+  type: string;
+  data: MessageDataRequest;
   id: number;
 }

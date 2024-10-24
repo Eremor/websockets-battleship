@@ -7,11 +7,8 @@ export const getPlayers = (): Map<string, Player> => {
   return players;
 };
 
-export const getPlayer = (name: string): Player | undefined => {
-  return players.get(name);
-};
-
-export const isPlayerExist = (name: string): boolean => players.has(name);
+export const getPlayer = (name: string): Player | undefined =>
+  players.get(name);
 
 export const createPlayer = (name: string, password: string): Player => {
   const newPlayer: Player = {
