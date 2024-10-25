@@ -27,6 +27,7 @@ export default tslint.config(
           'code': 100,
           'ignoreComments': true,
           'ignoreUrls': true,
+          'ignoreStrings': true
         }
       ]
     }

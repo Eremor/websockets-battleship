@@ -1,6 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { Message, MessageType, PlayerDTO } from '../../types';
+import { CreateRoomDTO, Message, MessageType, PlayerDTO } from '../../types';
 import {
+  handleCreateRoom,
   handlePlayerDisconnect,
   handlePlayerRegistration,
   handleUpdateRooms,
@@ -15,18 +16,19 @@ export const websocketService = (port: number) => {
 
     ws.on('message', (message: string) => {
       const parsedMessage: Message = JSON.parse(message);
-      const reqData = JSON.parse(parsedMessage.data);
       console.log(`Command received: ${parsedMessage.type}`);
 
       switch (parsedMessage.type) {
         case MessageType.REG: {
-          const reqPlayerData = reqData as PlayerDTO;
+          const reqPlayerData = JSON.parse(parsedMessage.data) as PlayerDTO;
           handlePlayerRegistration(ws, reqPlayerData);
           handleUpdateRooms(wss);
           handleUpdateWinners(wss);
           break;
         }
         case MessageType.CREATE_ROOM: {
+          handleCreateRoom(ws, parsedMessage.data);
+          handleUpdateRooms(wss);
           break;
         }
 

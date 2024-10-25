@@ -1,6 +1,11 @@
-import { WebSocketServer } from 'ws';
-import { getPlayerBySocket, getRooms } from '../../model';
-import { MessageType, RoomDataResponse } from '../../types';
+import WebSocket, { WebSocketServer } from 'ws';
+import { createRoom, getPlayerBySocket, getRooms } from '../../model';
+import {
+  CreateRoomDTO,
+  ErrorMessage,
+  MessageType,
+  RoomDataResponse,
+} from '../../types';
 import { sendMessage } from '../../utils';
 
 export const handleUpdateRooms = (wss: WebSocketServer) => {
@@ -27,4 +32,25 @@ export const handleUpdateRooms = (wss: WebSocketServer) => {
       });
     }
   });
+};
+
+export const handleCreateRoom = (
+  socket: WebSocket,
+  data: CreateRoomDTO,
+): void => {
+  try {
+    if (data !== '') {
+      throw new Error(ErrorMessage.UNEXPECTED_CREATE_ROOM_DATA);
+    }
+
+    const player = getPlayerBySocket(socket);
+
+    if (!player) {
+      throw new Error(ErrorMessage.UNEXPECTED_PLAYER);
+    }
+
+    createRoom(player);
+  } catch (error) {
+    console.error((error as Error).message);
+  }
 };

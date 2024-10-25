@@ -3,4 +3,4 @@ export type PlayerDTO = {
   password: string;
 };
 
-export type RoomDTO = string;
+export type CreateRoomDTO = string;

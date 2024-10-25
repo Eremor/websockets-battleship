@@ -9,16 +9,14 @@ export const getRooms = (): Room[] => {
 
 export const getRoom = (roomId: string): Room | undefined => rooms.get(roomId);
 
-export const createRoom = (): Room => {
+export const createRoom = (player: Player): void => {
   const roomId = randomUUID();
   const newRoom: Room = {
     id: roomId,
-    players: [],
+    players: [player],
   };
 
   rooms.set(roomId, newRoom);
-
-  return newRoom;
 };
 
 export const updateRoom = (roomId: string, player: Player): void => {

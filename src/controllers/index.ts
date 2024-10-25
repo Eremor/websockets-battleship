@@ -3,6 +3,6 @@ export {
   handlePlayerDisconnect,
 } from './player/playerController';
 
-export { handleUpdateRooms } from './room/roomController';
+export { handleUpdateRooms, handleCreateRoom } from './room/roomController';
 
 export { handleUpdateWinners } from './winner/winnerController';
