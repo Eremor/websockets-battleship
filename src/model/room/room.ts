@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { Player, Room } from '../../types';
+import { ErrorMessage, Player, Room } from '../../types';
 
 const rooms: Map<string, Room> = new Map();
 
@@ -19,11 +19,18 @@ export const createRoom = (player: Player): void => {
   rooms.set(roomId, newRoom);
 };
 
-export const updateRoom = (roomId: string, player: Player): void => {
+export const addToRoom = (roomId: string, player: Player): Room | undefined => {
   const room = rooms.get(roomId);
 
-  if (room && room.players.length < 2) {
+  if (!room) {
+    throw new Error(ErrorMessage.UNEXPECTED_ROOM);
+  }
+
+  const isOwner = !!room.players.filter((user) => user.id === player.id).length;
+
+  if (!isOwner && room.players.length < 2) {
     room.players.push(player);
+    return room;
   }
 };
 

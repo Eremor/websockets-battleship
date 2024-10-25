@@ -10,7 +10,7 @@ export {
   getRooms,
   getRoom,
   createRoom,
-  updateRoom,
+  addToRoom,
   removeRoom,
 } from './room/room';
 

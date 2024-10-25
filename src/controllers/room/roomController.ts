@@ -1,6 +1,12 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { createRoom, getPlayerBySocket, getRooms } from '../../model';
 import {
+  addToRoom,
+  createRoom,
+  getPlayerBySocket,
+  getRooms,
+} from '../../model';
+import {
+  AddToRoomDTO,
   CreateRoomDTO,
   ErrorMessage,
   MessageType,
@@ -50,6 +56,29 @@ export const handleCreateRoom = (
     }
 
     createRoom(player);
+  } catch (error) {
+    console.error((error as Error).message);
+  }
+};
+
+export const handleAddPlayerToRoom = (
+  wss: WebSocketServer,
+  socket: WebSocket,
+  data: AddToRoomDTO,
+): void => {
+  try {
+    const player = getPlayerBySocket(socket);
+    const { indexRoom } = data;
+
+    if (!player) {
+      throw new Error(ErrorMessage.UNEXPECTED_PLAYER);
+    }
+
+    const room = addToRoom(indexRoom, player);
+    if (room) {
+      handleUpdateRooms(wss);
+      console.log('create game');
+    }
   } catch (error) {
     console.error((error as Error).message);
   }

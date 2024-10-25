@@ -2,7 +2,7 @@ export type { Message } from './message/message';
 
 export { MessageType } from './message/messageType';
 
-export type { PlayerDTO, CreateRoomDTO } from './dto/dto';
+export type { PlayerDTO, CreateRoomDTO, AddToRoomDTO } from './dto/dto';
 
 export { ErrorMessage } from './errors/errorMessage';
 

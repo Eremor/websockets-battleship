@@ -4,3 +4,7 @@ export type PlayerDTO = {
 };
 
 export type CreateRoomDTO = string;
+
+export interface AddToRoomDTO {
+  indexRoom: string;
+}

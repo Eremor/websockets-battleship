@@ -1,6 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { CreateRoomDTO, Message, MessageType, PlayerDTO } from '../../types';
+import { AddToRoomDTO, Message, MessageType, PlayerDTO } from '../../types';
 import {
+  handleAddPlayerToRoom,
   handleCreateRoom,
   handlePlayerDisconnect,
   handlePlayerRegistration,
@@ -29,6 +30,13 @@ export const websocketService = (port: number) => {
         case MessageType.CREATE_ROOM: {
           handleCreateRoom(ws, parsedMessage.data);
           handleUpdateRooms(wss);
+          break;
+        }
+        case MessageType.ADD_USER_TO_ROOM: {
+          const reqAddToRoomDTO = JSON.parse(
+            parsedMessage.data,
+          ) as AddToRoomDTO;
+          handleAddPlayerToRoom(wss, ws, reqAddToRoomDTO);
           break;
         }
 
