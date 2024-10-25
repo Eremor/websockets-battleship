@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
-import { MessageResponse } from '../types';
+import { Message } from '../types';
 
-export const sendMessage = (ws: WebSocket, message: MessageResponse): void => {
+export const sendMessage = (ws: WebSocket, message: Message): void => {
   ws.send(JSON.stringify(message));
 };

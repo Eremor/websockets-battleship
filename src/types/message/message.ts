@@ -1,13 +1,5 @@
-import { MessageDataRequest } from './messageDataRequest';
-
-export interface MessageResponse {
+export interface Message {
   type: string;
   data: string;
-  id: number;
-}
-
-export interface MessageRequest {
-  type: string;
-  data: MessageDataRequest;
   id: number;
 }

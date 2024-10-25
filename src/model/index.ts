@@ -2,6 +2,14 @@ export {
   getPlayers,
   getPlayer,
   createPlayer,
-  updatePlayer,
+  getPlayerBySocket,
   removePlayer,
 } from './player/player';
+
+export {
+  getRooms,
+  getRoom,
+  createRoom,
+  updateRoom,
+  removeRoom,
+} from './room/room';

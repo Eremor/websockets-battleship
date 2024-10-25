@@ -1,6 +1,9 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { MessageRequest, MessageType } from '../../types';
-import { handlePlayerRegistration } from '../../controllers';
+import { Message, MessageType, PlayerDTO } from '../../types';
+import {
+  handlePlayerDisconnect,
+  handlePlayerRegistration,
+} from '../../controllers';
 
 export const websocketService = (port: number) => {
   const wss = new WebSocketServer({ port });
@@ -9,17 +12,28 @@ export const websocketService = (port: number) => {
     console.log('New connection');
 
     ws.on('message', (message: string) => {
-      const parsedMessage: MessageRequest = JSON.parse(message);
+      const parsedMessage: Message = JSON.parse(message);
+      const reqData = JSON.parse(parsedMessage.data);
       console.log(`Command received: ${parsedMessage.type}`);
 
       switch (parsedMessage.type) {
-        case MessageType.REG:
-          handlePlayerRegistration(ws, parsedMessage.data);
+        case MessageType.REG: {
+          const reqPlayerData = reqData as PlayerDTO;
+          handlePlayerRegistration(ws, reqPlayerData);
           break;
+        }
+        case MessageType.CREATE_ROOM: {
+          break;
+        }
 
         default:
           console.error('Unknown command type');
       }
+    });
+
+    ws.on('close', () => {
+      console.log(`User disconnect`);
+      handlePlayerDisconnect(ws);
     });
   });
 };

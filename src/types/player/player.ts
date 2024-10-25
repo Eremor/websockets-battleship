@@ -1,8 +1,10 @@
+import WebSocket from 'ws';
+
 export interface Player {
   id: string | number;
+  ws: WebSocket | null;
   name: string;
   password: string;
-  wins: number;
 }
 
 export type PlayerDataResponse = {

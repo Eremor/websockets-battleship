@@ -1,1 +1,4 @@
-export { handlePlayerRegistration } from './player/playerController';
+export {
+  handlePlayerRegistration,
+  handlePlayerDisconnect,
+} from './player/playerController';

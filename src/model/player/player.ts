@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
-import { Player } from '../../types';
+import { Player, PlayerDTO } from '../../types';
+import WebSocket from 'ws';
 
 const players: Map<string, Player> = new Map();
 
@@ -7,15 +8,21 @@ export const getPlayers = (): Map<string, Player> => {
   return players;
 };
 
-export const getPlayer = (name: string): Player | undefined =>
-  players.get(name);
+export const getPlayer = (userName: string): Player | undefined => {
+  return players.get(userName);
+};
 
-export const createPlayer = (name: string, password: string): Player => {
+export const getPlayerBySocket = (ws: WebSocket): Player | undefined => {
+  return Array.from(players.values()).find((player) => player.ws === ws);
+};
+
+export const createPlayer = (client: WebSocket, data: PlayerDTO): Player => {
+  const { name, password } = data;
   const newPlayer: Player = {
     id: randomUUID(),
+    ws: client,
     name,
     password,
-    wins: 0,
   };
 
   players.set(name, newPlayer);
@@ -23,14 +30,6 @@ export const createPlayer = (name: string, password: string): Player => {
   return newPlayer;
 };
 
-export const updatePlayer = (name: string): void => {
-  const player = players.get(name);
-
-  if (player) {
-    player.wins += 1;
-  }
-};
-
-export const removePlayer = (name: string): void => {
-  players.delete(name);
+export const removePlayer = (userName: string): void => {
+  players.delete(userName);
 };
