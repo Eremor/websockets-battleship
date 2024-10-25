@@ -4,6 +4,7 @@ import {
   handlePlayerDisconnect,
   handlePlayerRegistration,
   handleUpdateRooms,
+  handleUpdateWinners,
 } from '../../controllers';
 
 export const websocketService = (port: number) => {
@@ -22,6 +23,7 @@ export const websocketService = (port: number) => {
           const reqPlayerData = reqData as PlayerDTO;
           handlePlayerRegistration(ws, reqPlayerData);
           handleUpdateRooms(wss);
+          handleUpdateWinners(wss);
           break;
         }
         case MessageType.CREATE_ROOM: {

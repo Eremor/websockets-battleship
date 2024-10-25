@@ -13,3 +13,5 @@ export {
   updateRoom,
   removeRoom,
 } from './room/room';
+
+export { getWinners } from './winner/winner';
