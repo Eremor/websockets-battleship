@@ -8,4 +8,4 @@ export { ErrorMessage } from './errors/errorMessage';
 
 export type { Player, PlayerDataResponse } from './player/player';
 
-export type { Room } from './room/room';
+export type { Room, RoomData, RoomDataResponse } from './room/room';

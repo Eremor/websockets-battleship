@@ -3,7 +3,9 @@ import { Player, Room } from '../../types';
 
 const rooms: Map<string, Room> = new Map();
 
-export const getRooms = (): Map<string, Room> => rooms;
+export const getRooms = (): Room[] => {
+  return Array.from(rooms.values());
+};
 
 export const getRoom = (roomId: string): Room | undefined => rooms.get(roomId);
 

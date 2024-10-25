@@ -3,6 +3,7 @@ import { Message, MessageType, PlayerDTO } from '../../types';
 import {
   handlePlayerDisconnect,
   handlePlayerRegistration,
+  handleUpdateRooms,
 } from '../../controllers';
 
 export const websocketService = (port: number) => {
@@ -20,6 +21,7 @@ export const websocketService = (port: number) => {
         case MessageType.REG: {
           const reqPlayerData = reqData as PlayerDTO;
           handlePlayerRegistration(ws, reqPlayerData);
+          handleUpdateRooms(wss);
           break;
         }
         case MessageType.CREATE_ROOM: {
