@@ -8,6 +8,7 @@ export type {
   AddToRoomDTO,
   AttackDTO,
   AddShipsDTO,
+  RandomAttackDTO,
 } from './dto/dto';
 
 export { ErrorMessage } from './errors/errorMessage';

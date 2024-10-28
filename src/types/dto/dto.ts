@@ -23,3 +23,5 @@ export interface AttackDTO {
   y: number;
   indexPlayer: string | number;
 }
+
+export type RandomAttackDTO = Omit<AttackDTO, 'x' | 'y'>;

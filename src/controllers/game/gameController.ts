@@ -10,12 +10,14 @@ import {
   Game,
   GameResponse,
   MessageType,
+  RandomAttackDTO,
   Ship,
   ShipPosition,
   StartGameResponse,
   TurnResponse,
 } from '../../types';
 import { getSurroundingCells, isHit, sendMessage } from '../../utils';
+import { GameShipData } from '../../types/player/player';
 
 const SHIPS_AT_START_GAME = 10;
 
@@ -139,8 +141,8 @@ export const handleAttack = (data: AttackDTO): void => {
     let surroundingCells: ShipPosition[] = [];
     const attackPosition = {
       x: attackX,
-      y: attackY
-    }
+      y: attackY,
+    };
     const game = getGame(gameId);
 
     if (!game) {
@@ -201,6 +203,8 @@ export const handleAttack = (data: AttackDTO): void => {
       });
     }
 
+    console.log(checkFinish(enemy.ships));
+
     console.log(MessageType.ATTACK);
     const isTurn: boolean = attackStatus === 'miss' ? true : false;
     turn(gameId.toString(), indexPlayer.toString(), isTurn);
@@ -215,6 +219,20 @@ const sendAttackMessage = (client: WebSocket, data: AttackResponse): void => {
     data: JSON.stringify(data),
     id: 0,
   });
+};
+
+export const handleRandomAttack = (data: RandomAttackDTO): void => {
+  const randomAttackPositionX = Math.floor(Math.random() * 10);
+  const randomAttackPositionY = Math.floor(Math.random() * 10);
+  const { gameId, indexPlayer } = data;
+  const dataForAttack: AttackDTO = {
+    gameId,
+    indexPlayer,
+    x: randomAttackPositionX,
+    y: randomAttackPositionY,
+  };
+
+  handleAttack(dataForAttack);
 };
 
 const turn = (
@@ -262,4 +280,8 @@ const turn = (
   } catch (error) {
     console.error((error as Error).message);
   }
+};
+
+const checkFinish = (enemyShips: GameShipData[]): boolean => {
+  return enemyShips.every((ship) => ship.hits === ship.length);
 };

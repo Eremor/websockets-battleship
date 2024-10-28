@@ -5,6 +5,7 @@ import {
   AttackDTO,
   Message,
   MessageType,
+  RandomAttackDTO,
   UserDTO,
 } from '../../types';
 import {
@@ -16,6 +17,7 @@ import {
   handleUpdateWinners,
   addShips,
   handleAttack,
+  handleRandomAttack,
 } from '../../controllers';
 
 export const websocketService = (port: number) => {
@@ -56,6 +58,13 @@ export const websocketService = (port: number) => {
         case MessageType.ATTACK: {
           const reqAttack = JSON.parse(parsedMessage.data) as AttackDTO;
           handleAttack(reqAttack);
+          break;
+        }
+        case MessageType.RANDOM_ATTACK: {
+          const reqRandomAttack = JSON.parse(
+            parsedMessage.data,
+          ) as RandomAttackDTO;
+          handleRandomAttack(reqRandomAttack);
           break;
         }
 
