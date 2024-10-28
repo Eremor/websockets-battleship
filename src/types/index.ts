@@ -11,3 +11,9 @@ export type { User, UserDataResponse } from './user/user';
 export type { Room, RoomData, RoomDataResponse } from './room/room';
 
 export type { Winner } from './winner/winner';
+
+export type { Ship, ShipPosition, ShipType } from './ship/ship';
+
+export type { Player } from './player/player';
+
+export type { Game, GameResponse } from './game/game';

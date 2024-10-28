@@ -10,3 +10,5 @@ export {
 } from './room/roomController';
 
 export { handleUpdateWinners } from './winner/winnerController';
+
+export { handleCreateGame } from './game/gameController';

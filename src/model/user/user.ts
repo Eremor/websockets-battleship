@@ -16,6 +16,10 @@ export const getUserBySocket = (ws: WebSocket): User | undefined => {
   return Array.from(users.values()).find((user) => user.ws === ws);
 };
 
+export const getUserById = (id: string): User | undefined => {
+  return Array.from(users.values()).find((user) => user.id === id);
+};
+
 export const createUser = (client: WebSocket, data: UserDTO): User => {
   const { name, password } = data;
   const newUser: User = {

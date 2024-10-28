@@ -8,6 +8,7 @@ import {
   RoomDataResponse,
 } from '../../types';
 import { sendMessage } from '../../utils';
+import { handleCreateGame } from '../game/gameController';
 
 export const handleUpdateRooms = (wss: WebSocketServer) => {
   const rooms = getRooms();
@@ -72,6 +73,7 @@ export const handleAddUserToRoom = (
     const room = addToRoom(indexRoom, user);
     if (room) {
       handleUpdateRooms(wss);
+      handleCreateGame(data);
       console.log('create game');
     }
   } catch (error) {
