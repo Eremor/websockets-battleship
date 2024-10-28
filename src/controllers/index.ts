@@ -11,4 +11,4 @@ export {
 
 export { handleUpdateWinners } from './winner/winnerController';
 
-export { handleCreateGame } from './game/gameController';
+export { handleCreateGame, addShips } from './game/gameController';

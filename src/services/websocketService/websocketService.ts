@@ -7,7 +7,9 @@ import {
   handleUserRegistration,
   handleUpdateRooms,
   handleUpdateWinners,
+  addShips,
 } from '../../controllers';
+import { AddShipsDTO } from '../../types/dto/dto';
 
 export const websocketService = (port: number) => {
   const wss = new WebSocketServer({ port });
@@ -37,6 +39,11 @@ export const websocketService = (port: number) => {
             parsedMessage.data,
           ) as AddToRoomDTO;
           handleAddUserToRoom(wss, ws, reqAddToRoomDTO);
+          break;
+        }
+        case MessageType.ADD_SHIPS: {
+          const reqAddShips = JSON.parse(parsedMessage.data) as AddShipsDTO;
+          addShips(reqAddShips);
           break;
         }
 

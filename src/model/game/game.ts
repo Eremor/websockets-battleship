@@ -3,6 +3,10 @@ import { getRoom } from '../room/room';
 
 const games: Map<string, Game> = new Map();
 
+export const getGame = (gameId: string | number): Game | undefined => {
+  return games.get(gameId.toString());
+};
+
 export const createGame = (indexRoom: string | number): Game | undefined => {
   try {
     const roomId = indexRoom.toString();

@@ -17,4 +17,4 @@ export {
 
 export { getWinners } from './winner/winner';
 
-export { createGame } from './game/game';
+export { createGame, getGame } from './game/game';
