@@ -7,6 +7,9 @@
 2. `npm install`
 
 ## Usage
+
+rename `.env.example` file to `.env`
+
 **Development**
 
 `npm run start:dev`
