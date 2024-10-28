@@ -12,16 +12,17 @@ import { MessageType } from '../../types';
 export const handleUpdateWinners = (
   wss: WebSocketServer,
   winnerName: string,
+  isFinishGame: boolean,
 ): void => {
   const winner = getWinner(winnerName);
 
-  if (winner) {
+  if (winner && isFinishGame) {
     updateWinner(winnerName);
   } else {
     createWinner(winnerName);
   }
 
-  const winners = getWinners().sort((a, b) => a.wins - b.wins);
+  const winners = getWinners().sort((a, b) => b.wins - a.wins);
 
   wss.clients.forEach((client) => {
     const user = getUserBySocket(client);
@@ -36,4 +37,6 @@ export const handleUpdateWinners = (
       });
     }
   });
+
+  console.log(MessageType.UPDATE_WINNERS);
 };

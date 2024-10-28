@@ -16,4 +16,5 @@ export {
   addShips,
   handleAttack,
   handleRandomAttack,
+  handleFinishGame,
 } from './game/gameController';

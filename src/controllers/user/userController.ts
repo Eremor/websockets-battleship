@@ -6,10 +6,16 @@ import {
   UserDTO,
   UserDataResponse,
 } from '../../types';
-import { createUser, getUser, getUserBySocket } from '../../model';
+import {
+  createUser,
+  getGameByUserId,
+  getUser,
+  getUserBySocket,
+} from '../../model';
 import { sendMessage } from '../../utils';
 import { handleUpdateRooms } from '../room/roomController';
 import { handleUpdateWinners } from '../winner/winnerController';
+import { handleFinishGame } from '../game/gameController';
 
 export const handleUserRegistration = (
   wss: WebSocketServer,
@@ -26,14 +32,38 @@ export const handleUserRegistration = (
   }
 
   handleUpdateRooms(wss);
-  handleUpdateWinners(wss, data.name);
+  handleUpdateWinners(wss, data.name, false);
 };
 
-export const handleUserDisconnect = (ws: WebSocket): void => {
-  const user = getUserBySocket(ws);
+export const handleUserDisconnect = (
+  wss: WebSocketServer,
+  ws: WebSocket,
+): void => {
+  try {
+    const leavedUser = getUserBySocket(ws);
 
-  if (user) {
-    user.ws = null;
+    if (!leavedUser) {
+      throw new Error(ErrorMessage.UNEXPECTED_USER);
+    }
+
+    const game = getGameByUserId(leavedUser.id.toString());
+
+    if (!game) {
+      throw new Error(ErrorMessage.UNEXPECTED_GAME);
+    }
+
+    const winner = game.players.find(
+      (player) => player.indexPlayer !== leavedUser.id,
+    );
+
+    if (!winner) {
+      throw new Error(ErrorMessage.UNEXPECTED_USER);
+    }
+
+    handleFinishGame(wss, game, winner.indexPlayer.toString());
+    leavedUser.ws = null;
+  } catch (error) {
+    console.error((error as Error).message);
   }
 };
 

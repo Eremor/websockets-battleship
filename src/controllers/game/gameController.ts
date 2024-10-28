@@ -95,7 +95,7 @@ export const addShips = (data: AddShipsDTO): void => {
     );
 
     if (isValidToStart) {
-      console.log('start game');
+      console.log(MessageType.START_GAME);
       startGame(game);
     }
   } catch (error) {
@@ -329,7 +329,7 @@ export const handleFinishGame = (
     const winner = getUserById(winPlayer);
 
     if (winner) {
-      handleUpdateWinners(wss, winner.name);
+      handleUpdateWinners(wss, winner.name, true);
     }
     const [firstPlayer, secondPlayer] = game.players;
 

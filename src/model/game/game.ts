@@ -7,6 +7,12 @@ export const getGame = (gameId: string | number): Game | undefined => {
   return games.get(gameId.toString());
 };
 
+export const getGameByUserId = (userId: string): Game | undefined => {
+  return Array.from(games.values()).find((game) =>
+    game.players.find((player) => player.indexPlayer === userId),
+  );
+};
+
 export const createGame = (indexRoom: string | number): Game | undefined => {
   try {
     const roomId = indexRoom.toString();

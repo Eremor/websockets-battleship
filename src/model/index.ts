@@ -23,4 +23,4 @@ export {
   updateWinner,
 } from './winner/winner';
 
-export { createGame, getGame, removeGame } from './game/game';
+export { createGame, getGame, getGameByUserId, removeGame } from './game/game';

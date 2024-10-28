@@ -71,8 +71,8 @@ export const websocketService = (port: number) => {
     });
 
     ws.on('close', () => {
-      console.log(`User disconnect`);
-      handleUserDisconnect(ws);
+      console.log('User disconnect');
+      handleUserDisconnect(wss, ws);
     });
   });
 };

@@ -34,6 +34,8 @@ export const handleUpdateRooms = (wss: WebSocketServer) => {
       });
     }
   });
+
+  console.log(MessageType.UPDATE_ROOM);
 };
 
 export const handleCreateRoom = (
@@ -74,7 +76,7 @@ export const handleAddUserToRoom = (
     if (room) {
       handleUpdateRooms(wss);
       handleCreateGame(data);
-      console.log('create game');
+      console.log(MessageType.CREATE_GAME);
     }
   } catch (error) {
     console.error((error as Error).message);
