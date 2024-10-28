@@ -10,9 +10,9 @@ export const getSurroundingCells = (ship: Ship): ShipPosition[] => {
   const { x, y } = position;
   const shipDirection = direction ? 'vertical' : 'horizontal';
 
-  const startX = shipDirection === 'horizontal' ? x - 1 : x;
+  const startX = x - 1;
   const endX = shipDirection === 'horizontal' ? x + length : x + 1;
-  const startY = shipDirection === 'vertical' ? y - 1 : y;
+  const startY = y - 1;
   const endY = shipDirection === 'vertical' ? y + length : y + 1;
 
   for (let i = startX; i <= endX; i++) {

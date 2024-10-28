@@ -29,7 +29,8 @@ export default tslint.config(
           'ignoreUrls': true,
           'ignoreStrings': true
         }
-      ]
+      ],
+      '@typescript-eslint/no-non-null-assertion': 'off'
     }
   }
 )

@@ -137,6 +137,10 @@ export const handleAttack = (data: AttackDTO): void => {
     const { gameId, indexPlayer, x: attackX, y: attackY } = data;
     let attackStatus: AttackStatus = 'miss';
     let surroundingCells: ShipPosition[] = [];
+    const attackPosition = {
+      x: attackX,
+      y: attackY
+    }
     const game = getGame(gameId);
 
     if (!game) {
@@ -152,7 +156,7 @@ export const handleAttack = (data: AttackDTO): void => {
     }
 
     for (const ship of enemy.ships) {
-      if (isHit({ x: attackX, y: attackY }, ship)) {
+      if (isHit(attackPosition, ship)) {
         attackStatus = 'shot';
         ship.hits += 1;
 
@@ -170,6 +174,23 @@ export const handleAttack = (data: AttackDTO): void => {
         throw new Error(ErrorMessage.UNEXPECTED_USER);
       }
 
+      if (attackStatus === 'killed') {
+        surroundingCells.forEach((value) => {
+          sendAttackMessage(user.ws!, {
+            position: {
+              x: value.x,
+              y: value.y,
+            },
+            status: 'miss',
+            currentPlayer: indexPlayer,
+          });
+
+          console.log(MessageType.ATTACK);
+          turn(gameId.toString(), indexPlayer.toString(), false);
+        });
+        surroundingCells = [];
+      }
+
       sendAttackMessage(user.ws, {
         position: {
           x: attackX,
@@ -179,20 +200,8 @@ export const handleAttack = (data: AttackDTO): void => {
         currentPlayer: indexPlayer,
       });
     }
-    console.log(surroundingCells);
-    // if (surroundingCells.length > 0) {
-    //   surroundingCells.forEach((pos, index) => {
-    //     if (index < surroundingCells.length - 1) {
-    //       return handleAttack({
-    //         gameId,
-    //         x: pos.x,
-    //         y: pos.y,
-    //         indexPlayer,
-    //       });
-    //     }
-    //   });
-    // }
 
+    console.log(MessageType.ATTACK);
     const isTurn: boolean = attackStatus === 'miss' ? true : false;
     turn(gameId.toString(), indexPlayer.toString(), isTurn);
   } catch (error) {
