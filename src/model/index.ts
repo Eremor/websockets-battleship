@@ -10,6 +10,7 @@ export {
 export {
   getRooms,
   getRoom,
+  getRoomByUsers,
   createRoom,
   addToRoom,
   removeRoom,
@@ -17,4 +18,4 @@ export {
 
 export { getWinners } from './winner/winner';
 
-export { createGame, getGame } from './game/game';
+export { createGame, getGame, removeGame } from './game/game';

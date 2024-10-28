@@ -39,3 +39,7 @@ export const createGame = (indexRoom: string | number): Game | undefined => {
     console.error((error as Error).message);
   }
 };
+
+export const removeGame = (roomId: string): void => {
+  games.delete(roomId);
+};

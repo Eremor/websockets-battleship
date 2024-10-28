@@ -30,4 +30,5 @@ export type {
   AttackResponse,
   AttackStatus,
   TurnResponse,
+  FinishGameResponse,
 } from './game/game';

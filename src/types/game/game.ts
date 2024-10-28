@@ -27,3 +27,7 @@ export interface AttackResponse {
 export interface TurnResponse {
   currentPlayer: string | number;
 }
+
+export interface FinishGameResponse {
+  winPlayer: string | number;
+}

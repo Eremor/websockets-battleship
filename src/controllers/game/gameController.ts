@@ -1,5 +1,12 @@
 import WebSocket from 'ws';
-import { createGame, getGame, getUserById } from '../../model';
+import {
+  createGame,
+  getGame,
+  getRoomByUsers,
+  getUserById,
+  removeGame,
+  removeRoom,
+} from '../../model';
 import {
   AddShipsDTO,
   AddToRoomDTO,
@@ -7,6 +14,7 @@ import {
   AttackResponse,
   AttackStatus,
   ErrorMessage,
+  FinishGameResponse,
   Game,
   GameResponse,
   MessageType,
@@ -203,11 +211,13 @@ export const handleAttack = (data: AttackDTO): void => {
       });
     }
 
-    console.log(checkFinish(enemy.ships));
-
     console.log(MessageType.ATTACK);
     const isTurn: boolean = attackStatus === 'miss' ? true : false;
     turn(gameId.toString(), indexPlayer.toString(), isTurn);
+
+    if (checkFinish(enemy.ships)) {
+      return handleFinishGame(game, indexPlayer.toString());
+    }
   } catch (error) {
     console.error((error as Error).message);
   }
@@ -284,4 +294,45 @@ const turn = (
 
 const checkFinish = (enemyShips: GameShipData[]): boolean => {
   return enemyShips.every((ship) => ship.hits === ship.length);
+};
+
+export const handleFinishGame = (game: Game, winPlayer: string): void => {
+  try {
+    for (const player of game.players) {
+      const user = getUserById(player.indexPlayer.toString());
+
+      if (!user || user.ws === null) {
+        throw new Error(ErrorMessage.UNEXPECTED_USER);
+      }
+
+      const response: FinishGameResponse = {
+        winPlayer,
+      };
+
+      sendMessage(user.ws, {
+        type: MessageType.FINISH,
+        data: JSON.stringify(response),
+        id: 0,
+      });
+    }
+
+    console.log(MessageType.FINISH);
+
+    // update winners
+    const [firstPlayer, secondPlayer] = game.players;
+
+    const room = getRoomByUsers(
+      firstPlayer.indexPlayer.toString(),
+      secondPlayer.indexPlayer.toString(),
+    );
+
+    if (!room) {
+      throw new Error(ErrorMessage.UNEXPECTED_ROOM);
+    }
+
+    removeGame(room.id);
+    removeRoom(room.id);
+  } catch (error) {
+    console.error((error as Error).message);
+  }
 };

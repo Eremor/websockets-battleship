@@ -9,6 +9,23 @@ export const getRooms = (): Room[] => {
 
 export const getRoom = (roomId: string): Room | undefined => rooms.get(roomId);
 
+export const getRoomByUsers = (
+  firstUserId: string,
+  secondUserId: string,
+): Room | undefined => {
+  let findRoom: Room | undefined;
+
+  for (const room of Array.from(rooms.values())) {
+    const [firstUser, secondUser] = room.users;
+
+    if (firstUser.id === firstUserId && secondUser.id === secondUserId) {
+      findRoom = room;
+    }
+  }
+
+  return findRoom;
+};
+
 export const createRoom = (user: User): void => {
   const roomId = randomUUID();
   const newRoom: Room = {
