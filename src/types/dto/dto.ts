@@ -1,4 +1,4 @@
-export type PlayerDTO = {
+export type UserDTO = {
   name: string;
   password: string;
 };

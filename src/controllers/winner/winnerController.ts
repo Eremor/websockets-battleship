@@ -1,5 +1,5 @@
 import { WebSocketServer } from 'ws';
-import { getPlayerBySocket, getWinners } from '../../model';
+import { getUserBySocket, getWinners } from '../../model';
 import { sendMessage } from '../../utils';
 import { MessageType } from '../../types';
 
@@ -7,9 +7,9 @@ export const handleUpdateWinners = (wss: WebSocketServer): void => {
   const winners = getWinners();
 
   wss.clients.forEach((client) => {
-    const player = getPlayerBySocket(client);
+    const user = getUserBySocket(client);
 
-    if (!player) return;
+    if (!user) return;
 
     if (client.readyState === client.OPEN) {
       sendMessage(client, {

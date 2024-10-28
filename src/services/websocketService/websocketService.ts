@@ -1,10 +1,10 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { AddToRoomDTO, Message, MessageType, PlayerDTO } from '../../types';
+import { AddToRoomDTO, Message, MessageType, UserDTO } from '../../types';
 import {
-  handleAddPlayerToRoom,
+  handleAddUserToRoom,
   handleCreateRoom,
-  handlePlayerDisconnect,
-  handlePlayerRegistration,
+  handleUserDisconnect,
+  handleUserRegistration,
   handleUpdateRooms,
   handleUpdateWinners,
 } from '../../controllers';
@@ -21,8 +21,8 @@ export const websocketService = (port: number) => {
 
       switch (parsedMessage.type) {
         case MessageType.REG: {
-          const reqPlayerData = JSON.parse(parsedMessage.data) as PlayerDTO;
-          handlePlayerRegistration(ws, reqPlayerData);
+          const reqUserData = JSON.parse(parsedMessage.data) as UserDTO;
+          handleUserRegistration(ws, reqUserData);
           handleUpdateRooms(wss);
           handleUpdateWinners(wss);
           break;
@@ -36,7 +36,7 @@ export const websocketService = (port: number) => {
           const reqAddToRoomDTO = JSON.parse(
             parsedMessage.data,
           ) as AddToRoomDTO;
-          handleAddPlayerToRoom(wss, ws, reqAddToRoomDTO);
+          handleAddUserToRoom(wss, ws, reqAddToRoomDTO);
           break;
         }
 
@@ -47,7 +47,7 @@ export const websocketService = (port: number) => {
 
     ws.on('close', () => {
       console.log(`User disconnect`);
-      handlePlayerDisconnect(ws);
+      handleUserDisconnect(ws);
     });
   });
 };

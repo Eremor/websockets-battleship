@@ -1,10 +1,10 @@
 export {
-  getPlayers,
-  getPlayer,
-  createPlayer,
-  getPlayerBySocket,
-  removePlayer,
-} from './player/player';
+  getUsers,
+  getUser,
+  getUserBySocket,
+  createUser,
+  removeUser,
+} from './user/user';
 
 export {
   getRooms,

@@ -1,13 +1,13 @@
 import WebSocket from 'ws';
 
-export interface Player {
+export interface User {
   id: string | number;
   ws: WebSocket | null;
   name: string;
   password: string;
 }
 
-export type PlayerDataResponse = {
+export type UserDataResponse = {
   name: string;
   index: string | number;
   error: boolean;

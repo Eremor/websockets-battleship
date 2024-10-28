@@ -1,12 +1,12 @@
 export {
-  handlePlayerRegistration,
-  handlePlayerDisconnect,
-} from './player/playerController';
+  handleUserRegistration,
+  handleUserDisconnect,
+} from './user/userController';
 
 export {
   handleUpdateRooms,
   handleCreateRoom,
-  handleAddPlayerToRoom,
+  handleAddUserToRoom,
 } from './room/roomController';
 
 export { handleUpdateWinners } from './winner/winnerController';

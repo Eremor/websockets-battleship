@@ -1,8 +1,8 @@
-import { Player } from '../player/player';
+import { User } from '../user/user';
 
 export interface Room {
   id: string;
-  players: Player[];
+  users: User[];
 }
 
 interface RoomUser {
