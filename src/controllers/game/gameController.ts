@@ -3,15 +3,17 @@ import { createGame, getGame, getUserById } from '../../model';
 import {
   AddToRoomDTO,
   ErrorMessage,
+  Game,
   GameResponse,
   MessageType,
+  StartGameResponse,
 } from '../../types';
 import { sendMessage } from '../../utils';
 import { AddShipsDTO } from '../../types/dto/dto';
 
 const SHIPS_AT_START_GAME = 10;
 
-export const handleCreateGame = (data: AddToRoomDTO) => {
+export const handleCreateGame = (data: AddToRoomDTO): void => {
   try {
     const game = createGame(data.indexRoom);
 
@@ -46,7 +48,7 @@ const sendCreateGameAnswer = (ws: WebSocket, dataRes: GameResponse) => {
   });
 };
 
-export const addShips = (data: AddShipsDTO) => {
+export const addShips = (data: AddShipsDTO): void => {
   try {
     const { gameId, indexPlayer, ships } = data;
 
@@ -72,8 +74,37 @@ export const addShips = (data: AddShipsDTO) => {
 
     if (isValidToStart) {
       console.log('start game');
+      startGame(game);
     }
   } catch (error) {
     console.error((error as Error).message);
   }
+};
+
+const startGame = (game: Game): void => {
+  try {
+    const [firstPlayer] = game.players;
+    for (const player of game.players) {
+      const user = getUserById(player.indexPlayer.toString());
+
+      if (!user || user.ws === null) {
+        throw new Error(ErrorMessage.UNEXPECTED_USER);
+      }
+
+      sendStartGameAnswer(user.ws, {
+        ships: player.ships,
+        currentPlayerIndex: firstPlayer.indexPlayer,
+      });
+    }
+  } catch (error) {
+    console.error((error as Error).message);
+  }
+};
+
+const sendStartGameAnswer = (ws: WebSocket, data: StartGameResponse): void => {
+  sendMessage(ws, {
+    type: MessageType.START_GAME,
+    data: JSON.stringify(data),
+    id: 0,
+  });
 };

@@ -16,4 +16,4 @@ export type { Ship, ShipPosition, ShipType } from './ship/ship';
 
 export type { Player } from './player/player';
 
-export type { Game, GameResponse } from './game/game';
+export type { Game, GameResponse, StartGameResponse } from './game/game';
