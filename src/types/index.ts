@@ -2,7 +2,13 @@ export type { Message } from './message/message';
 
 export { MessageType } from './message/messageType';
 
-export type { UserDTO, CreateRoomDTO, AddToRoomDTO } from './dto/dto';
+export type {
+  UserDTO,
+  CreateRoomDTO,
+  AddToRoomDTO,
+  AttackDTO,
+  AddShipsDTO,
+} from './dto/dto';
 
 export { ErrorMessage } from './errors/errorMessage';
 
@@ -16,4 +22,11 @@ export type { Ship, ShipPosition, ShipType } from './ship/ship';
 
 export type { Player } from './player/player';
 
-export type { Game, GameResponse, StartGameResponse } from './game/game';
+export type {
+  Game,
+  GameResponse,
+  StartGameResponse,
+  AttackResponse,
+  AttackStatus,
+  TurnResponse,
+} from './game/game';

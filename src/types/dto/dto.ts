@@ -16,3 +16,10 @@ export interface AddShipsDTO {
   ships: Ship[];
   indexPlayer: number | string;
 }
+
+export interface AttackDTO {
+  gameId: string | number;
+  x: number;
+  y: number;
+  indexPlayer: string | number;
+}

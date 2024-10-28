@@ -1,5 +1,12 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { AddToRoomDTO, Message, MessageType, UserDTO } from '../../types';
+import {
+  AddShipsDTO,
+  AddToRoomDTO,
+  AttackDTO,
+  Message,
+  MessageType,
+  UserDTO,
+} from '../../types';
 import {
   handleAddUserToRoom,
   handleCreateRoom,
@@ -8,8 +15,8 @@ import {
   handleUpdateRooms,
   handleUpdateWinners,
   addShips,
+  handleAttack,
 } from '../../controllers';
-import { AddShipsDTO } from '../../types/dto/dto';
 
 export const websocketService = (port: number) => {
   const wss = new WebSocketServer({ port });
@@ -44,6 +51,11 @@ export const websocketService = (port: number) => {
         case MessageType.ADD_SHIPS: {
           const reqAddShips = JSON.parse(parsedMessage.data) as AddShipsDTO;
           addShips(reqAddShips);
+          break;
+        }
+        case MessageType.ATTACK: {
+          const reqAttack = JSON.parse(parsedMessage.data) as AttackDTO;
+          handleAttack(reqAttack);
           break;
         }
 
