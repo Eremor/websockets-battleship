@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 import {
   createGame,
   getGame,
@@ -26,6 +26,7 @@ import {
 } from '../../types';
 import { getSurroundingCells, isHit, sendMessage } from '../../utils';
 import { GameShipData } from '../../types/player/player';
+import { handleUpdateWinners } from '../winner/winnerController';
 
 const SHIPS_AT_START_GAME = 10;
 
@@ -142,7 +143,7 @@ const sendStartGameAnswer = (ws: WebSocket, data: StartGameResponse): void => {
   });
 };
 
-export const handleAttack = (data: AttackDTO): void => {
+export const handleAttack = (wss: WebSocketServer, data: AttackDTO): void => {
   try {
     const { gameId, indexPlayer, x: attackX, y: attackY } = data;
     let attackStatus: AttackStatus = 'miss';
@@ -216,7 +217,7 @@ export const handleAttack = (data: AttackDTO): void => {
     turn(gameId.toString(), indexPlayer.toString(), isTurn);
 
     if (checkFinish(enemy.ships)) {
-      return handleFinishGame(game, indexPlayer.toString());
+      return handleFinishGame(wss, game, indexPlayer.toString());
     }
   } catch (error) {
     console.error((error as Error).message);
@@ -231,7 +232,10 @@ const sendAttackMessage = (client: WebSocket, data: AttackResponse): void => {
   });
 };
 
-export const handleRandomAttack = (data: RandomAttackDTO): void => {
+export const handleRandomAttack = (
+  wss: WebSocketServer,
+  data: RandomAttackDTO,
+): void => {
   const randomAttackPositionX = Math.floor(Math.random() * 10);
   const randomAttackPositionY = Math.floor(Math.random() * 10);
   const { gameId, indexPlayer } = data;
@@ -242,7 +246,7 @@ export const handleRandomAttack = (data: RandomAttackDTO): void => {
     y: randomAttackPositionY,
   };
 
-  handleAttack(dataForAttack);
+  handleAttack(wss, dataForAttack);
 };
 
 const turn = (
@@ -296,7 +300,11 @@ const checkFinish = (enemyShips: GameShipData[]): boolean => {
   return enemyShips.every((ship) => ship.hits === ship.length);
 };
 
-export const handleFinishGame = (game: Game, winPlayer: string): void => {
+export const handleFinishGame = (
+  wss: WebSocketServer,
+  game: Game,
+  winPlayer: string,
+): void => {
   try {
     for (const player of game.players) {
       const user = getUserById(player.indexPlayer.toString());
@@ -318,7 +326,11 @@ export const handleFinishGame = (game: Game, winPlayer: string): void => {
 
     console.log(MessageType.FINISH);
 
-    // update winners
+    const winner = getUserById(winPlayer);
+
+    if (winner) {
+      handleUpdateWinners(wss, winner.name);
+    }
     const [firstPlayer, secondPlayer] = game.players;
 
     const room = getRoomByUsers(

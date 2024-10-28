@@ -16,6 +16,11 @@ export {
   removeRoom,
 } from './room/room';
 
-export { getWinners } from './winner/winner';
+export {
+  getWinners,
+  getWinner,
+  createWinner,
+  updateWinner,
+} from './winner/winner';
 
 export { createGame, getGame, removeGame } from './game/game';

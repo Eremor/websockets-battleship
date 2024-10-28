@@ -14,7 +14,6 @@ import {
   handleUserDisconnect,
   handleUserRegistration,
   handleUpdateRooms,
-  handleUpdateWinners,
   addShips,
   handleAttack,
   handleRandomAttack,
@@ -33,9 +32,7 @@ export const websocketService = (port: number) => {
       switch (parsedMessage.type) {
         case MessageType.REG: {
           const reqUserData = JSON.parse(parsedMessage.data) as UserDTO;
-          handleUserRegistration(ws, reqUserData);
-          handleUpdateRooms(wss);
-          handleUpdateWinners(wss);
+          handleUserRegistration(wss, ws, reqUserData);
           break;
         }
         case MessageType.CREATE_ROOM: {
@@ -57,14 +54,14 @@ export const websocketService = (port: number) => {
         }
         case MessageType.ATTACK: {
           const reqAttack = JSON.parse(parsedMessage.data) as AttackDTO;
-          handleAttack(reqAttack);
+          handleAttack(wss, reqAttack);
           break;
         }
         case MessageType.RANDOM_ATTACK: {
           const reqRandomAttack = JSON.parse(
             parsedMessage.data,
           ) as RandomAttackDTO;
-          handleRandomAttack(reqRandomAttack);
+          handleRandomAttack(wss, reqRandomAttack);
           break;
         }
 

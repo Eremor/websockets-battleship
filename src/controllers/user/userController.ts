@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 import {
   ErrorMessage,
   MessageType,
@@ -8,15 +8,25 @@ import {
 } from '../../types';
 import { createUser, getUser, getUserBySocket } from '../../model';
 import { sendMessage } from '../../utils';
+import { handleUpdateRooms } from '../room/roomController';
+import { handleUpdateWinners } from '../winner/winnerController';
 
-export const handleUserRegistration = (ws: WebSocket, data: UserDTO): void => {
+export const handleUserRegistration = (
+  wss: WebSocketServer,
+  ws: WebSocket,
+  data: UserDTO,
+): void => {
   const user = getUser(data.name);
+
   if (user) {
     checkIsConnectionUser(ws, user, data.password);
   } else {
     const newUser = createUser(ws, data);
     sendSuccessAnswer(ws, newUser);
   }
+
+  handleUpdateRooms(wss);
+  handleUpdateWinners(wss, data.name);
 };
 
 export const handleUserDisconnect = (ws: WebSocket): void => {
